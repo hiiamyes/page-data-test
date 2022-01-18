@@ -59,8 +59,8 @@ const cities = [
               );
               console.log("receivedTitle: ", receivedTitle);
               console.log("expectedTitle: ", expectedTitle);
+              console.log("\n");
             }
-            console.log("\n");
           } catch (error) {
             console.log(error.message);
           }

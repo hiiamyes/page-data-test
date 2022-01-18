@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node --insecure-http-parser index.js"
   },
   "dependencies": {
     "axios": "^0.24.0",
