@@ -1,3 +1,4 @@
+const chalk = require("chalk");
 const axios = require("axios");
 
 const subdomains = [
@@ -32,11 +33,8 @@ const cities = [
       for (const tag of tags) {
         for (const city of cities) {
           try {
-            const {
-              data: {
-                metadata: { title: receivedTitle },
-              },
-            } = await axios.get(
+            let received, expected;
+            const { data: receivedData } = await axios.get(
               "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data",
               {
                 params: {
@@ -51,19 +49,89 @@ const cities = [
               `https://${subdomain}.amazingtalker.com/tutors/${language}/${tag}`,
               { params: { city } }
             );
-            const expectedTitle = /<title>(.*)<\/title></.exec(html)[1];
 
-            if (receivedTitle !== expectedTitle) {
+            console.log(
+              `https://${subdomain}.amazingtalker.com/tutors/${language}/${tag}?city=${city}`
+            );
+
+            // metadata title
+            received = receivedData.metadata.title;
+            expected = /<title>(.*)<\/title></.exec(html)[1];
+            if (!received || !expected || received !== expected) {
+              console.log(chalk.yellow("metadata title"));
               console.log(
                 `curl "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
               );
-              console.log("receivedTitle: ", receivedTitle);
-              console.log("expectedTitle: ", expectedTitle);
-              console.log("\n");
+              console.log("received: ", received);
+              console.log("expected: ", expected);
+              throw Error();
             }
+
+            // metadata description
+            received = receivedData.metadata.description;
+            expected = /name="description" content="(.*?)">/.exec(html)[1];
+            if (!received || !expected || received !== expected) {
+              console.log(chalk.yellow("metadata description"));
+              console.log(
+                `curl "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
+              );
+              console.log("received: ", received);
+              console.log("expected: ", expected);
+              throw Error();
+            }
+
+            // page hero title desktop
+            received = receivedData.page_hero.title;
+            expected =
+              /<h2 class="wall-title at-text-shadow is-hidden-mobile".+?>(.*?)<\/h2></.exec(
+                html
+              )[1];
+            if (!received || !expected || received !== expected) {
+              console.log(chalk.yellow("page hero title desktop"));
+              console.log(
+                `curl "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
+              );
+              console.log("received: ", received);
+              console.log("expected: ", expected);
+              throw Error();
+            }
+
+            // page hero title mobile
+            received = receivedData.page_hero.mobile_title;
+            expected =
+              /<h2 class="wall-title at-text-shadow is-hidden-tablet".+?>(.*?)<\/h2></.exec(
+                html
+              )[1];
+            if (!received || !expected || received !== expected) {
+              console.log(chalk.yellow("page hero title mobile"));
+              console.log(
+                `curl "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
+              );
+              console.log("received: ", received);
+              console.log("expected: ", expected);
+              throw Error();
+            }
+
+            // page hero subtitle
+            received = receivedData.page_hero.subtitle;
+            expected = /class="wall-subtitle at-text-shadow".+?>(.*?)<\//.exec(
+              html
+            )[1];
+            if (!received || !expected || received !== expected) {
+              console.log(chalk.yellow("page hero subtitle"));
+              console.log(
+                `curl "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
+              );
+              console.log("received: ", received);
+              console.log("expected: ", expected);
+              throw Error();
+            }
+            console.log(chalk.green("pass"));
           } catch (error) {
-            console.log(error.message);
+            console.log(chalk.red("fail"));
+            if (error.message) console.log(chalk.red(error.message));
           }
+          console.log("\n");
         }
       }
     }

@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
+    "chalk": "4.1.0",
     "nodemon": "^2.0.15"
   }
 }
