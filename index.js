@@ -1,6 +1,8 @@
 const chalk = require("chalk");
 const axios = require("axios");
 
+const RAILS_API_BASE_URL = "https://api.staging-st.amazingtalker.com";
+
 const subdomains = [
   "en",
   "tw",
@@ -35,7 +37,7 @@ const cities = [
           try {
             let received, expected;
             const { data: receivedData } = await axios.get(
-              "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data",
+              `${RAILS_API_BASE_URL}/v1/pages/teachers/page_data`,
               {
                 params: {
                   language_url_name: language,
@@ -60,7 +62,7 @@ const cities = [
             if (!received || !expected || received !== expected) {
               console.log(chalk.yellow("metadata title"));
               console.log(
-                `curl "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
+                `curl "${RAILS_API_BASE_URL}/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
               );
               console.log("received: ", received);
               console.log("expected: ", expected);
@@ -73,7 +75,7 @@ const cities = [
             if (!received || !expected || received !== expected) {
               console.log(chalk.yellow("metadata description"));
               console.log(
-                `curl "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
+                `curl "${RAILS_API_BASE_URL}/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
               );
               console.log("received: ", received);
               console.log("expected: ", expected);
@@ -89,7 +91,7 @@ const cities = [
             if (!received || !expected || received !== expected) {
               console.log(chalk.yellow("page hero title desktop"));
               console.log(
-                `curl "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
+                `curl "${RAILS_API_BASE_URL}/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
               );
               console.log("received: ", received);
               console.log("expected: ", expected);
@@ -105,7 +107,7 @@ const cities = [
             if (!received || !expected || received !== expected) {
               console.log(chalk.yellow("page hero title mobile"));
               console.log(
-                `curl "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
+                `curl "${RAILS_API_BASE_URL}/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
               );
               console.log("received: ", received);
               console.log("expected: ", expected);
@@ -120,7 +122,7 @@ const cities = [
             if (!received || !expected || received !== expected) {
               console.log(chalk.yellow("page hero subtitle"));
               console.log(
-                `curl "https://api.staging-st.amazingtalker.com/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
+                `curl "${RAILS_API_BASE_URL}/v1/pages/teachers/page_data?language_url_name=${language}&tag_value=${tag}&city_code=${city}" -H 'AtSubdomain: ${subdomain}'`
               );
               console.log("received: ", received);
               console.log("expected: ", expected);
