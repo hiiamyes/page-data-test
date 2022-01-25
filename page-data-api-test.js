@@ -5,36 +5,30 @@ const { isEqual, orderBy } = require("lodash/fp");
 const RAILS_API_BASE_URL = "https://api.amazingtalker.com";
 
 const subdomains = [
-  // "en",
+  "en",
   "tw",
-  // "au",
-  // "ca",
-  // "cn",
-  // "es",
-  // "fr",
-  // "hk",
-  // "jp",
-  // "kr",
-  // "pt",
-  // "th",
-  // "uk",
+  "au",
+  "ca",
+  "cn",
+  "es",
+  "fr",
+  "hk",
+  "jp",
+  "kr",
+  "pt",
+  "th",
+  "uk",
 ];
-const languages = [
-  "english",
-  //  "chinese", "japanese"
-];
-const tags = [
-  "business",
-  // "children"
-];
+const languages = ["english", "chinese", "japanese"];
+const tags = ["business", "children"];
 const tagIds = ["121-5", "121-2"];
 const cities = [
-  // "en_united_states_oklahoma_city",
-  // "es_argentine_republic_mendoza",
-  // "fr_france_ajaccio",
+  "en_united_states_oklahoma_city",
+  "es_argentine_republic_mendoza",
+  "fr_france_ajaccio",
   "taipei",
-  // "tokyo",
-  // "kr_korea_tongyeong",
+  "tokyo",
+  "kr_korea_tongyeong",
 ];
 
 (async () => {
@@ -54,20 +48,19 @@ const cities = [
                 },
               }
             );
-            const { data: wallData } = await axios.post(
-              `${RAILS_API_BASE_URL}/v1/pages/teachers/wall`,
-              {
-                headers: { AtSubdomain: subdomain },
-                data: {
-                  teach_language_url_name: language,
-                  tag_id: tagIds[tagIndex],
-                  city: {
-                    code: city,
-                  },
-                  page: 1,
+            const { data: wallData } = await axios.request({
+              url: `${RAILS_API_BASE_URL}/v1/pages/teachers/wall`,
+              method: "post",
+              headers: { AtSubdomain: subdomain },
+              data: {
+                teach_language_url_name: language,
+                tag_id: tagIds[tagIndex],
+                city: {
+                  code: city,
                 },
-              }
-            );
+                page: 1,
+              },
+            });
             console.log(subdomain, language, tags[tagIndex], city);
             if (
               isEqual(
