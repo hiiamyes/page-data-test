@@ -1,11 +1,13 @@
 {
   "scripts": {
     "dev": "nodemon --insecure-http-parser index.js",
-    "start": "node --insecure-http-parser index.js"
+    "start": "node --insecure-http-parser index.js",
+    "start:page-data": "node --insecure-http-parser page-data-api-test.js"
   },
   "dependencies": {
     "axios": "^0.24.0",
     "chalk": "4.1.0",
+    "lodash": "^4.17.21",
     "nodemon": "^2.0.15"
   }
 }
