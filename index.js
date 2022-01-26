@@ -77,6 +77,7 @@ const cities = [
                   `https://${subdomain}.amazingtalker.com/tutors/${language}/${tag}?${city ? `city=${city}` : ""}`
                 );
                 console.log(chalk.red("fail"));
+                console.log("\n");
                 // throw Error();
               }
               // console.log(chalk.green("pass"));
