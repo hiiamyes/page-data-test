@@ -2,29 +2,25 @@ const chalk = require("chalk");
 const axios = require("axios");
 
 const subdomains = [
-  "en",
   "tw",
-  "au",
-  "ca",
-  "cn",
-  "es",
-  "fr",
-  "hk",
-  "jp",
-  "kr",
-  "pt",
-  "th",
-  "uk",
+  //  "en", "au", "ca", "cn", "es", "fr", "hk", "jp", "kr", "pt", "th", "uk"
 ];
-const languages = ["english", "chinese", "japanese"];
-const tags = ["business", "children"];
+const languages = [
+  "english",
+  //  "chinese", "japanese"
+];
+const tags = [
+  "",
+  // , "business", "children"
+];
 const cities = [
-  "en_united_states_oklahoma_city",
-  "es_argentine_republic_mendoza",
-  "fr_france_ajaccio",
-  "taipei",
-  "tokyo",
-  "kr_korea_tongyeong",
+  "neihu",
+  // "taipei",
+  // "en_united_states_oklahoma_city",
+  // "es_argentine_republic_mendoza",
+  // "fr_france_ajaccio",
+  // "tokyo",
+  // "kr_korea_tongyeong",
 ];
 
 (async () => {
@@ -34,6 +30,7 @@ const cities = [
       for (const tag of tags) {
         for (const city of cities) {
           try {
+            console.log(subdomain, language, tag, city);
             const { data: receivedHtml } = await axios.request({
               url: `https://${subdomain}.amazingtalker.com/tutors-debug/${language}/${tag}`,
               params: { city },
@@ -61,19 +58,16 @@ const cities = [
                 re: /class="wall-subtitle at-text-shadow".+?>(.*?)<\//,
               },
             ].forEach(({ name, re }) => {
+              console.log(chalk.gray(name));
               const received = re.exec(receivedHtml)[1];
               const expected = re.exec(expectedHtml)[1];
+              console.log(chalk.gray("received: " + received));
+              console.log(chalk.gray("expected: " + expected));
               if (!received || !expected || received !== expected) {
-                console.log(subdomain, language, tag, city, name);
-                console.log(chalk.gray(name));
-                console.log(chalk.gray("received: " + received));
-                console.log(chalk.gray("expected: " + expected));
-                console.log(
-                  `https://${subdomain}.amazingtalker.com/tutors-debug/${language}/${tag}`
-                );
+                console.log(`https://${subdomain}.amazingtalker.com/tutors-debug/${language}/${tag}`);
                 throw Error();
               }
-              console.log(chalk.green("pass"), subdomain, language, tag, city, name);
+              console.log(chalk.green("pass"));
             });
           } catch (error) {
             console.log(chalk.red("fail"));
@@ -84,4 +78,5 @@ const cities = [
     }
   }
   console.log(chalk.yellow("tutors debug page test ended"));
+  process.exit();
 })();
