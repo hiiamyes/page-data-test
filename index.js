@@ -2,7 +2,7 @@ const chalk = require("chalk");
 const axios = require("axios");
 const { get } = require("lodash/fp");
 
-const RAILS_API_BASE_URL = "https://api.staging-st.amazingtalker.com";
+const RAILS_API_BASE_URL = "https://api.amazingtalker.com";
 
 const subdomains = ["tw", "en", "au", "ca", "cn", "es", "fr", "hk", "jp", "kr", "pt", "th", "uk"];
 const languages = ["english", "chinese", "japanese"];
@@ -18,6 +18,7 @@ const cities = [
 ];
 
 (async () => {
+  console.log(chalk.yellow("tutors debug page test started"));
   for (const subdomain of subdomains) {
     for (const language of languages) {
       for (const tag of tags) {
@@ -69,7 +70,12 @@ const cities = [
                 console.log(chalk.gray(name));
                 console.log(chalk.gray("received: " + received));
                 console.log(chalk.gray("expected: " + expected));
-                console.log(`https://${subdomain}.amazingtalker.com/tutors-debug/${language}/${tag}`);
+                console.log(
+                  `https://${subdomain}.amazingtalker.com/tutors-debug/${language}/${tag}?${city ? `city=${city}` : ""}`
+                );
+                console.log(
+                  `https://${subdomain}.amazingtalker.com/tutors/${language}/${tag}?${city ? `city=${city}` : ""}`
+                );
                 console.log(chalk.red("fail"));
                 // throw Error();
               }
@@ -79,10 +85,10 @@ const cities = [
             // console.log(chalk.red("fail"));
             if (error.message) console.log(chalk.red(error.message));
           }
-          console.log("\n");
         }
       }
     }
   }
+  console.log(chalk.yellow("tutors debug page test ended"));
+  process.exit();
 })();
-
