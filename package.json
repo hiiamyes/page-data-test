@@ -2,8 +2,10 @@
   "scripts": {
     "dev": "nodemon --insecure-http-parser index.js",
     "start": "node --insecure-http-parser index.js",
-    "start:page-data": "node --insecure-http-parser page-data-api-test.js"
+    "start:page-data": "node --insecure-http-parser page-data-api-test.js",
+    "start:tutors-debug-page-test": "node tutors-debug-page-test.js"
   },
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.24.0",
     "chalk": "4.1.0",
