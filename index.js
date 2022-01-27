@@ -62,7 +62,7 @@ const cities = [
             ].forEach(({ name, key, re }) => {
               // console.log(chalk.gray(name));
               const received = get(key, receivedData);
-              const expected = re.exec(expectedHtml)[1];
+              const expected = re.exec(expectedHtml)[1].replace(/&amp;/g, "&");
               // console.log(chalk.gray("received: " + received));
               // console.log(chalk.gray("expected: " + expected));
               if (!received || !expected || received !== expected) {
