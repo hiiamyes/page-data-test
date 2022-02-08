@@ -1,23 +1,23 @@
 const chalk = require("chalk");
 const axios = require("axios");
-const { isEqual, orderBy } = require("lodash/fp");
+const { isEqual, orderBy, concat } = require("lodash/fp");
 
 const RAILS_API_BASE_URL = "https://api.amazingtalker.com";
 
 const subdomains = [
-  "en",
-  "tw",
-  "au",
-  "ca",
-  "cn",
-  "es",
-  "fr",
-  "hk",
-  "jp",
-  "kr",
-  "pt",
-  "th",
-  "uk",
+  ["en", "en"],
+  ["tw", "zh-TW"],
+  ["au", "en-AU"],
+  ["ca", "en-CA"],
+  ["cn", "zh-CN"],
+  ["es", "es"],
+  ["fr", "fr"],
+  ["hk", "zh-HK"],
+  ["jp", "ja"],
+  ["kr", "ko"],
+  ["pt", "pt"],
+  ["th", "th"],
+  ["uk", "en-GB"],
 ];
 const languages = ["english", "chinese", "japanese"];
 const tags = ["business", "children"];
@@ -32,22 +32,19 @@ const cities = [
 ];
 
 (async () => {
-  for (const subdomain of subdomains) {
+  for (const [subdomain, locale] of subdomains) {
     for (const language of languages) {
       for (let tagIndex = 0; tagIndex < tags.length; tagIndex++) {
         for (const city of cities) {
           try {
-            const { data: pageData } = await axios.get(
-              `${RAILS_API_BASE_URL}/v1/pages/teachers/page_data`,
-              {
-                headers: { AtSubdomain: subdomain },
-                params: {
-                  language_url_name: language,
-                  tag_value: tags[tagIndex],
-                  city_code: city,
-                },
-              }
-            );
+            const { data: pageData } = await axios.get(`${RAILS_API_BASE_URL}/v1/pages/teachers/page_data`, {
+              headers: { AtSubdomain: subdomain, AtLocale: locale },
+              params: {
+                language_url_name: language,
+                tag_value: tags[tagIndex],
+                city_code: city,
+              },
+            });
             const { data: wallData } = await axios.request({
               url: `${RAILS_API_BASE_URL}/v1/pages/teachers/wall`,
               method: "post",
@@ -61,35 +58,22 @@ const cities = [
                 page: 1,
               },
             });
-            console.log(subdomain, language, tags[tagIndex], city);
-            if (
-              isEqual(
-                orderBy(
-                  ["key", "city", "city_name"],
-                  ["asc", "asc", "asc"],
-                  pageData.footer.cities
-                ),
-                orderBy(
-                  ["key", "city", "city_name"],
-                  ["asc", "asc", "asc"],
-                  wallData.custom_city_codes
-                )
-              )
-            ) {
+            const { data: clientInfoData } = await axios.request({
+              url: `${RAILS_API_BASE_URL}/v1/settings/client_info`,
+              headers: { AtSubdomain: subdomain, AtLocale: locale },
+            });
+            const expectedData = orderBy(
+              ["code", "name"],
+              ["asc", "asc"],
+              wallData.custom_city_codes.length
+                ? wallData.custom_city_codes.map(({ city, city_name }) => ({ code: city, name: city_name }))
+                : clientInfoData.neighboring_city_infos.map(({ code, name }) => ({ code, name }))
+            );
+            console.log(subdomain, locale, language, tags[tagIndex], city);
+            if (isEqual(orderBy(["code", "name"], ["asc", "asc"], pageData.footer.cities), expectedData)) {
               console.log(chalk.green("pass"));
             } else {
-              console.log(
-                orderBy(
-                  ["key", "city", "city_name"],
-                  ["asc", "asc", "asc"],
-                  pageData.footer.cities
-                ),
-                orderBy(
-                  ["key", "city", "city_name"],
-                  ["asc", "asc", "asc"],
-                  wallData.custom_city_codes
-                )
-              );
+              console.log(orderBy(["code", "name"], ["asc", "asc"], pageData.footer.cities), expectedData);
               throw new Error();
             }
           } catch (error) {
