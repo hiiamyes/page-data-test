@@ -2,7 +2,9 @@ const chalk = require("chalk");
 const axios = require("axios");
 const { isEqual, orderBy, concat } = require("lodash/fp");
 
-const RAILS_API_BASE_URL = "https://api.amazingtalker.com";
+// const RAILS_API_BASE_URL = "https://api.amazingtalker.com";
+// const RAILS_API_BASE_URL = "https://api.staging-rt.amazingtalker.com";
+const RAILS_API_BASE_URL = "https://api.staging.amazingtalker.com";
 
 const subdomains = [
   ["en", "en"],
