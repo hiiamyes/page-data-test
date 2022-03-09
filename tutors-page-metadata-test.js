@@ -2,37 +2,37 @@ const chalk = require("chalk");
 const axios = require("axios");
 const { isEqual, orderBy, concat } = require("lodash/fp");
 
-// const RAILS_API_BASE_URL = "https://api.amazingtalker.com";
-const RAILS_API_BASE_URL = "http://192.168.1.63:3000";
+const RAILS_API_BASE_URL = "https://api.amazingtalker.com";
+// const RAILS_API_BASE_URL = "http://192.168.1.63:3000";
 // const RAILS_API_BASE_URL = "https://api.staging-rt.amazingtalker.com";
 // const RAILS_API_BASE_URL = "https://api.staging.amazingtalker.com";
 // const RAILS_API_BASE_URL = "https://api.staging-st.amazingtalker.com";
 
 const subdomains = [
-  // ["en", "en"],
-  // ["tw", "zh-TW"],
-  ["au", "en-AU"],
-  ["ca", "en-CA"],
-  ["cn", "zh-CN"],
+  ["en", "en"],
+  ["tw", "zh-TW"],
   ["es", "es"],
   ["fr", "fr"],
   ["hk", "zh-HK"],
   ["jp", "ja"],
   ["kr", "ko"],
+  ["uk", "en-GB"],
+  ["au", "en-AU"],
+  ["ca", "en-CA"],
+  ["cn", "zh-CN"],
   ["pt", "pt"],
   ["th", "th"],
-  ["uk", "en-GB"],
 ];
 const languages = [
   null,
   "english",
-  // "chinese",
-  // "japanese",
+  "chinese",
+  "japanese",
 ];
 const tags = [
   null,
   "business",
-  // "children",
+  "children",
 ];
 const tagIds = [null, "121-5", "121-2"];
 const cities = [
@@ -41,10 +41,13 @@ const cities = [
   // "es_argentine_republic_mendoza",
   // "fr_france_ajaccio",
   "taipei",
-  "tokyo",
+  // "tokyo",
   // "kr_korea_tongyeong",
 ];
-const offlines = [null, "classes-near-me"];
+const offlines = [
+  null,
+  "classes-near-me"
+];
 
 (async () => {
   for (const [subdomain, locale] of subdomains) {
@@ -71,10 +74,14 @@ const offlines = [null, "classes-near-me"];
                 }`,
                 params: { city, offline },
               });
-              const expectedTitle = /<title>(.*)<\/title></.exec(expectedHtml)[1].replace(/amp;/g, "");
+              const expectedTitle = /<title>(.*)<\/title></
+                .exec(expectedHtml)[1]
+                .replace(/amp;/g, "")
+                .replace(/&#x27;/g, "'");
               const expectedDescription = /name="description" content="(.*?)">/
                 .exec(expectedHtml)[1]
                 .replace(/amp;/g, "")
+                .replace(/&#x27;/g, "'")
                 .replace(/\d* reviews/, "1234 reviews");
               if (
                 isEqual(pageData.metadata.title, expectedTitle) &&
