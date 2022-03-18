@@ -4,7 +4,8 @@
     "start": "node --insecure-http-parser index.js",
     "start:page-data": "node --insecure-http-parser page-data-api-test.js",
     "start:tutors-debug-page-test": "node tutors-debug-page-test.js",
-    "start:tutors-page-metadata-test": "node --insecure-http-parser tutors-page-metadata-test.js"
+    "start:tutors-page-metadata-test": "node --insecure-http-parser tutors-page-metadata-test.js",
+    "start:tutors-page-hero-test": "node --insecure-http-parser tutors-page-hero-test.js"
   },
   "license": "MIT",
   "dependencies": {
