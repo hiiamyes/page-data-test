@@ -10,4 +10,5 @@ yarn dev
 ```
 yarn
 yarn start
+yarn run start:tutors-page-hero-test
 ```
