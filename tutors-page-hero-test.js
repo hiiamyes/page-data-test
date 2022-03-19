@@ -10,19 +10,19 @@ const { isEqual, orderBy, concat } = require("lodash/fp");
 const RAILS_API_BASE_URL = "http://localhost:3000";
 
 const countries = [
-  ["en", "en"],
-  ["tw", "zh-TW"],
+  // ["en", "en"],
+  // ["tw", "zh-TW"],
   ["jp", "ja"],
-  ["kr", "ko"],
-  ["au", "en-AU"],
-  ["pt", "pt"],
-  ["th", "th"],
-  ["cn", "zh-CN"],
-  ["hk", "zh-HK"],
-  ["fr", "fr"],
-  ["es", "es"],
-  ["uk", "en-GB"],
-  ["ca", "en-CA"],
+  // ["kr", "ko"],
+  // ["au", "en-AU"],
+  // ["pt", "pt"],
+  // ["th", "th"],
+  // ["cn", "zh-CN"],
+  // ["hk", "zh-HK"],
+  // ["fr", "fr"],
+  // ["es", "es"],
+  // ["uk", "en-GB"],
+  // ["ca", "en-CA"],
 ];
 const languages = [
   null,
